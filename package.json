@@ -1,0 +1,32 @@
+{
+    "dependencies": {
+        "colors": "^1.4.0",
+        "if2": "^0.2.0",
+        "noda": "^0.6.0"
+    },
+    "devDependencies": {
+        "mocha": "^3.3.0"
+    },
+    "directories": {},
+    "scripts": {
+        "test": "mocha"
+    },
+    "name": "manonee",
+    "version": "0.0.1",
+    "main": "index.js",
+    "keywords": [
+        "man",
+        "manual-page"
+    ],
+    "homepage": "https://github.com/YounGoat/nodejs.manon",
+    "description": "Manual page render",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YounGoat/nodejs.manon.git"
+    },
+    "author": {
+        "name": "YounGoat",
+        "email": "youngoat@163.com",
+        "url": "https://youngoat.github.io"
+    }
+}

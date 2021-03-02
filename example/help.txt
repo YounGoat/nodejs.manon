@@ -1,0 +1,30 @@
+
+NAME
+    command-name - Introduce the command in a few words.
+
+SYNOPSIS
+    command subcommand-1 [--option-1 <variable-name>] 
+                         --option-2 (enum-1|enum-2|enum-3)
+                         [--verbose] [--debug] <naked-variable>
+    command subcommand-2
+
+OPTIONS
+    --option-1 | -o <variable-name>
+    # Details about this option.
+    # Details about its value.
+
+    --option-2 or -O (enum-1|enum-2|enum-3)
+    Details about this option and available values.
+
+    <naked-variable>
+    An argument does not belong to any option.
+
+SEE ALSO
+    * npm docs
+    * npm home
+    * https://www.npmjs.org/
+    
+ABOUT
+    Manon will concatenate sibling lines into one line. 
+    If the concatenated line is too long to be displayed without horizontal scrollbar,
+    it will be wrapped automatically.
