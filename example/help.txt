@@ -6,7 +6,11 @@ SYNOPSIS
     command subcommand-1 [--option-1 <variable-name>] 
                          --option-2 (enum-1|enum-2|enum-3)
                          [--verbose] [--debug] <naked-variable>
+    # Brief introduction of subcommand.
+
     command subcommand-2
+    command subcommand-2 [--option-1 <variable-name>]
+    # Brief introduction of subcommand.
 
 OPTIONS
     --option-1 | -o <variable-name>

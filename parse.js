@@ -409,7 +409,7 @@ const PARSER = {
 		 * 先分拆，后分析。
 		 */
 		let commands = [], command = '';
-		for (let i = 0; i < lines.length; i++) {
+		for (let i = 0, indent = TAB_SIZE; i < lines.length; i++) {
 			let line = lines[i];
 
 			/**
@@ -424,6 +424,7 @@ const PARSER = {
 
 			if (!command) {
 				command = line;
+				indent = line.match(/^\s*/)[0].length;
 				continue;
 			}
 			
@@ -432,7 +433,7 @@ const PARSER = {
 			 * 缩进行可视为上一行的自然延续。
 			 */
 			let IW = getIndentWidth(line);
-			if (IW > TAB_SIZE) {
+			if (IW > indent) {
 				command += ' ' + line;
 				continue;
 			}
@@ -452,7 +453,6 @@ const PARSER = {
 			command = line;
 		}
 		command && commands.push(command);
-
 		return commands.map(PARSER.command);
 	},
 
