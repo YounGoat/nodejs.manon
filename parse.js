@@ -113,7 +113,7 @@ const PARSER = {
 		let consumer = {
 			'name': () => {
 				// Get command name.
-				let ret = rtext.match(/^([\w\-]+)(\s|$)/);
+				let ret = rtext.match(/^(\w[\w\-]*)(\s|$)/);
 				if (!ret) return false;
 				
 				let name = ret[1];
@@ -328,7 +328,7 @@ const PARSER = {
 		let childs = [], line;
 
 		// The first line is heading line.
-		let name = lines.shift().toUpperCase();
+		let name = lines.shift().trim().toUpperCase();
 		childs.push([ 'heading', name ]);
 
 		// Parse the remainder lines according different section types.
@@ -352,9 +352,11 @@ const PARSER = {
 		let elements = [];
 		for (let i = 0; i < lines.length; i++) {
 			let line = lines[i];
-			if (/^\s+([^\-]+)\s+-\s*(.+)$/.test(line)) {
-				let dt = RegExp.$1;
-				let dd = RegExp.$2;
+			let matched = line.match(/^\s+((\w[\w\-]*\s+)+)\s*-\s*(.+)$/);
+			if (matched) {
+				let [ WHOLE, dt, COMMAND_NAME_PART, dd ] = matched;
+				dt = dt.trim();
+				dd = dd.trim();
 				elements.push([ 'phrase', { dt, dd } ]);
 			}
 			else if (!/^\s*$/.test(line)) {

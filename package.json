@@ -11,8 +11,8 @@
     "scripts": {
         "test": "mocha"
     },
-    "name": "manonee",
-    "version": "0.0.1",
+    "name": "manon",
+    "version": "0.1.0",
     "main": "index.js",
     "keywords": [
         "man",
