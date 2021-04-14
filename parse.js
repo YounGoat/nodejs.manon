@@ -44,11 +44,13 @@ const PARSER = {
 	 *   --name 
 	 *   --name <varname>
 	 *   --name (enum0|enum1|enum2)
+	 *   --name free text embedded  
 	 */
 	'argument': function(piece) {
 		let element, remainder = piece;
 
-		ARGUMENT_OPTION: {
+		ARGUMENT_OPTION: if (!element) {
+			//                      SPACE      --NAME         or         --NAME           <VARNAME>       (enum0|...)
 			let ret = piece.match(/^(\*\s)?(-{1,2}[\w\-]+(\s+(or|\|)\s+-{1,2}[\w\-]+)*)(\s+<([\w\-]+)>|\s+\(([^)]+)\)|\s+|$)/);
 			if (!ret) break ARGUMENT_OPTION;
 
@@ -84,12 +86,21 @@ const PARSER = {
 			remainder = piece.slice(whole.length);
 		}
 
-		ARGUMENT_VARNAME: {
-			let ret = (piece || rtext).match(/^<([\w-]+)>/);
+		ARGUMENT_VARNAME: if (!element) {
+			let ret = piece.match(/^<([\w-]+)>/);
 			if (!ret) break ARGUMENT_VARNAME;
 			
 			let [ whole, name ] = ret;
 			element = [ 'varname', { name } ];
+			remainder = piece.slice(whole.length);
+		}
+
+		ARGUMENT_LITERAL: if (!element) {
+			let ret = piece.match(/^[^#\s]+/);
+			if (!ret) break ARGUMENT_LITERAL;
+
+			let [ whole ] = ret;
+			element = [ 'literal', whole ];
 			remainder = piece.slice(whole.length);
 		}
 
@@ -352,10 +363,10 @@ const PARSER = {
 		let elements = [];
 		for (let i = 0; i < lines.length; i++) {
 			let line = lines[i];
-			let matched = line.match(/^\s+((\w[\w\-]*\s+)+)\s*-\s*(.+)$/);
+			let matched = line.match(/^\s+((\w[\w\-]*[,\s]+)+)\s*-\s*(.+)$/);
 			if (matched) {
-				let [ WHOLE, dt, COMMAND_NAME_PART, dd ] = matched;
-				dt = dt.trim();
+				let [ WHOLE, dt, COMMAND_NAME_PART, dd ] = matched;				
+				dt = [ 'names', ... dt.trim().split(/\s*,\s*/) ];
 				dd = dd.trim();
 				elements.push([ 'phrase', { dt, dd } ]);
 			}
@@ -370,7 +381,7 @@ const PARSER = {
 	 * @param {string[]} lines 
 	 */
 	'section.OPTIONS': function(lines) {
-		let terms = [];
+		let termParas = [];
 
 		/**
 		 * Run until a blank line.
@@ -383,7 +394,7 @@ const PARSER = {
 			 * 空行可视为两个段落的天然分界线。
 			 */
 			if (/^\s*$/.test(lines[i])) {
-				terms.push(para);
+				termParas.push(para);
 
 				/**
 				 * Reset current paragraph.
@@ -395,9 +406,9 @@ const PARSER = {
 				para.push(lines[i]);
 			}
 		}
-		para.length && terms.push(para);
+		para.length && termParas.push(para);
 
-		return terms.map(PARSER.term);
+		return termParas.map(PARSER.term);
 	},
 
 	/**
@@ -475,7 +486,7 @@ const PARSER = {
 			}
 			else {
 				dt = [ 'lines', dt ];
-			}
+			}			
 		}
 
 		let dd = PARSER.lines(lines);

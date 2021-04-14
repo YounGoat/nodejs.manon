@@ -189,6 +189,11 @@ const RENDER = {
 		return format_s(lines);
 	},
 
+	'names': function(...names) {
+		let sep = colors.dim(' / ');
+		return names.map(name => colors.bold.cyan(name)).join(sep);
+	},
+
 	'option': function(option) {
 		let { bullet, name, value, optional } = option;
 
@@ -216,15 +221,16 @@ const RENDER = {
 	},
 
 	'phrase': function(phrase) {
-		return '' +
-			indent() + colors.bold.cyan(format(phrase.dt)) + 
-			SPACE + '-' + SPACE + 
-			format(phrase.dd) + 
-			EOL;
+		let text =  format(phrase.dt) + SPACE + '-' + SPACE + format(phrase.dd);
+		return format([ 'line', text ]);
 	},
 
 	'quoted': function(quoted) {
 		return colors.dim('"') + colors.green(quoted) + colors.dim('"');
+	},
+
+	'literal': function(literal) {
+		return colors.cyan(literal);
 	},
 
 	'section': function() {
@@ -296,7 +302,7 @@ function format_s(elements, joiner = '') {
 /**
  * Format one element.
  * 格式化一个元素。
- * @param {Element} tree
+ * @param {Element}   tree
  * @return {string}
  */
 function format(tree) {
