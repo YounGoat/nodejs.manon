@@ -2,6 +2,11 @@
 
 Notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning 2.0.0](http://semver.org/).
 
+##	[0.2.1] - 2021-07-26
+
+*	当 ARGUMENTS / OPTIONS 节内容为空时，避免程序崩溃。  
+	Prevent the program from breaking while ARGUMENTS or OPTIONS section is empty.
+
 ##	[0.2.0] - 2021-04-14
 
 *	允许 SYNOPSIS 中出现 literal 片断。

@@ -394,7 +394,7 @@ const PARSER = {
 			 * 空行可视为两个段落的天然分界线。
 			 */
 			if (/^\s*$/.test(lines[i])) {
-				termParas.push(para);
+				para.length && termParas.push(para);
 
 				/**
 				 * Reset current paragraph.
@@ -408,6 +408,7 @@ const PARSER = {
 		}
 		para.length && termParas.push(para);
 
+		console.log(termParas);
 		return termParas.map(PARSER.term);
 	},
 
