@@ -408,7 +408,6 @@ const PARSER = {
 		}
 		para.length && termParas.push(para);
 
-		console.log(termParas);
 		return termParas.map(PARSER.term);
 	},
 
